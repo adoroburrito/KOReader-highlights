@@ -114,6 +114,7 @@ fn extract_single_annotation(table: &full_moon::ast::TableConstructor) -> Option
     let mut chapter: Option<String> = None;
     let mut page: Option<i32> = None;
     let mut text: Option<String> = None;
+    let mut note: Option<String> = None;
     let mut datetime: Option<String> = None;
 
     for field in table.fields() {
@@ -124,6 +125,7 @@ fn extract_single_annotation(table: &full_moon::ast::TableConstructor) -> Option
                 Some("chapter") => chapter = extract_string_from_expr(value),
                 Some("pageno") => page = extract_number_from_expr(value),
                 Some("text") => text = extract_string_from_expr(value),
+                Some("note") => note = extract_string_from_expr(value),
                 Some("datetime") => datetime = extract_string_from_expr(value),
                 _ => {}
             }
@@ -139,6 +141,7 @@ fn extract_single_annotation(table: &full_moon::ast::TableConstructor) -> Option
         chapter,
         page,
         text,
+        note,
         datetime,
     })
 }
@@ -235,6 +238,24 @@ return {
 return { this is not valid lua [[[
 "#;
 
+    const LUA_WITH_NOTE: &str = r#"
+return {
+    ["annotations"] = {
+        [1] = {
+            ["chapter"] = "Chapter 1",
+            ["datetime"] = "2026-01-25 10:30:00",
+            ["pageno"] = 36,
+            ["text"] = "Homens assim são tão perigosos",
+            ["note"] = "por que?",
+        },
+    },
+    ["doc_props"] = {
+        ["title"] = "Test Book With Notes",
+        ["authors"] = "Note Author",
+    },
+}
+"#;
+
     #[test]
     fn test_parse_valid_metadata() {
         let result = parse_metadata(SAMPLE_LUA, "test.lua").unwrap();
@@ -295,5 +316,24 @@ return { this is not valid lua [[[
         let filtered = filter_by_date(book.highlights, from, to);
 
         assert!(filtered.is_empty());
+    }
+
+    #[test]
+    fn test_parse_highlight_with_note() {
+        let result = parse_metadata(LUA_WITH_NOTE, "test.lua").unwrap();
+
+        assert_eq!(result.highlights.len(), 1);
+
+        let h = &result.highlights[0];
+        assert_eq!(h.text, "Homens assim são tão perigosos");
+        assert_eq!(h.note, Some("por que?".to_string()));
+    }
+
+    #[test]
+    fn test_parse_highlight_without_note() {
+        let result = parse_metadata(SAMPLE_LUA, "test.lua").unwrap();
+
+        let h = &result.highlights[0];
+        assert!(h.note.is_none());
     }
 }

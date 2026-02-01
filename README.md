@@ -42,6 +42,16 @@ Create a `.env` file if you're tired of typing the same flags every week like so
 cargo build --release
 ```
 
+## Roadmap
+- [ ] MVP
+  - [X] CLI module
+  - [ ] Parser module properly interpreting the metadata files and extracting all useful info
+  - [ ] DB module that properly interacts with SQLite
+  - [ ] Use it for a couple of weeks and check if it works properly, iron out any bugs found
+- [ ] Future
+  - [ ] Support for other filetypes besides EPUBs?
+  - [ ] maybe pair this up with a telegram bot or something, so i don't have to rely on sitting down on my computer every darn time
+
 ## License
 
 MIT - do whatever you want, I'm not your mom.

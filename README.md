@@ -45,10 +45,10 @@ cargo build --release
 ## Roadmap
 - [ ] MVP
   - [X] CLI module
-  - [ ] Parser module properly interpreting the metadata files and extracting all useful info
+  - [X] Parser module properly interpreting the metadata files and extracting all useful info
     - [X] Extract highlighted content
-    - [ ] Extract notes in highlights
-  - [ ] DB module that properly interacts with SQLite
+    - [X] Extract notes in highlights
+  - [X] DB module that properly interacts with SQLite
   - [ ] Use it for a couple of weeks and check if it works properly, iron out any bugs found
 - [ ] Future
   - [ ] Support for other filetypes besides EPUBs?

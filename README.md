@@ -46,6 +46,8 @@ cargo build --release
 - [ ] MVP
   - [X] CLI module
   - [ ] Parser module properly interpreting the metadata files and extracting all useful info
+    - [X] Extract highlighted content
+    - [ ] Extract notes in highlights
   - [ ] DB module that properly interacts with SQLite
   - [ ] Use it for a couple of weeks and check if it works properly, iron out any bugs found
 - [ ] Future
